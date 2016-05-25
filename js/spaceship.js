@@ -1,7 +1,7 @@
 var Spaceship = function(context) {
   this.context = context;
   this.spaceship = {
-    color: "red",
+    color: "white",
     width: 8,
     height: 22,
     position: {x: 20, y: 20},
@@ -11,6 +11,7 @@ var Spaceship = function(context) {
     rotatingLeft: false,
     rotatingRight: false,
     crashed: false,
+    fuel: 1000
   };
 };
 
@@ -25,13 +26,14 @@ var Spaceship = function(context) {
       this.context.closePath();
 
       if(this.spaceship.engineOn) {
+          this.spaceship.fuel -= 1;
           this.context.beginPath();
           this.context.moveTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
           this.context.lineTo(this.spaceship.width * 0.5, this.spaceship.height * 0.5);
           this.context.lineTo(0, this.spaceship.height * 0.5 + Math.random() * 10);
           this.context.lineTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
           this.context.closePath();
-          this.context.fillStyle = "orange";
+          this.context.fillStyle = "white";
           this.context.fill();
       }
       this.context.restore();

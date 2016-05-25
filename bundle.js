@@ -46,8 +46,10 @@
 
 	var canvas = document.getElementById("game");
 	var context = canvas.getContext("2d");
-	
 	var Spaceship = __webpack_require__(1);
+	var Moon = __webpack_require__(2);
+	
+	var moon = new Moon(context);
 	var spaceship = new Spaceship(context);
 	
 	function draw() {
@@ -60,6 +62,7 @@
 	    context.beginPath();
 	    spaceship.updateSpaceship();
 	    spaceship.drawSpaceship();
+	    moon.drawMoon();
 	    requestAnimationFrame(draw);
 	}
 	
@@ -103,7 +106,7 @@
 	var Spaceship = function(context) {
 	  this.context = context;
 	  this.spaceship = {
-	    color: "red",
+	    color: "white",
 	    width: 8,
 	    height: 22,
 	    position: {x: 20, y: 20},
@@ -113,6 +116,7 @@
 	    rotatingLeft: false,
 	    rotatingRight: false,
 	    crashed: false,
+	    fuel: 1000
 	  };
 	};
 	
@@ -127,13 +131,14 @@
 	      this.context.closePath();
 	
 	      if(this.spaceship.engineOn) {
+	          this.spaceship.fuel -= 1;
 	          this.context.beginPath();
 	          this.context.moveTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
 	          this.context.lineTo(this.spaceship.width * 0.5, this.spaceship.height * 0.5);
 	          this.context.lineTo(0, this.spaceship.height * 0.5 + Math.random() * 10);
 	          this.context.lineTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
 	          this.context.closePath();
-	          this.context.fillStyle = "orange";
+	          this.context.fillStyle = "white";
 	          this.context.fill();
 	      }
 	      this.context.restore();
@@ -158,6 +163,34 @@
 	  };
 	
 	  module.exports = Spaceship;
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	var Moon = function(context) {
+	  this.context = context;
+	  this.moon = {
+	    landingPads: [],
+	    moonStart: {x: 0, y: 400},
+	    moonEnd: {x: 1000, y: 400}
+	  };
+	};
+	
+	Moon.prototype.drawMoon = function() {
+	  var context = this.context;
+	  var moon = this.moon;
+	  context.save();
+	  context.beginPath();
+	  context.moveTo(moon.moonStart.x, moon.moonStart.y);
+	  context.lineTo(moon.moonEnd.x, moon.moonEnd.y);
+	  context.strokeStyle = "white";
+	  context.stroke();
+	  context.closePath();
+	};
+	
+	module.exports = Moon;
 
 
 /***/ }

@@ -1,7 +1,9 @@
 var canvas = document.getElementById("game");
 var context = canvas.getContext("2d");
-
 var Spaceship = require('./spaceship.js');
+var Moon = require('./moon.js');
+
+var moon = new Moon(context);
 var spaceship = new Spaceship(context);
 
 function draw() {
@@ -14,6 +16,7 @@ function draw() {
     context.beginPath();
     spaceship.updateSpaceship();
     spaceship.drawSpaceship();
+    moon.drawMoon();
     requestAnimationFrame(draw);
 }
 
