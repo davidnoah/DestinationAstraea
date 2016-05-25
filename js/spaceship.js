@@ -1,108 +1,58 @@
-var spaceship =
-{
-    color: "black",
+var Spaceship = function(context) {
+  this.context = context;
+  this.spaceship = {
+    color: "red",
     width: 8,
     height: 22,
-    position:
-    {
-        x: 20,
-        y: 20
-    },
-    velocity:
-    {
-        x: 0,
-        y: 0
-    },
+    position: {x: 20, y: 20},
+    velocity: {x: -0.7, y: 0},
     angle: Math.PI / 2,
     engineOn: false,
     rotatingLeft: false,
     rotatingRight: false,
-    crashed: false
+    crashed: false,
+  };
 };
 
-function drawSpaceship()
-{
-    context.save();
-    context.beginPath();
-    context.translate(spaceship.position.x, spaceship.position.y);
-    context.rotate(spaceship.angle);
-    context.rect(spaceship.width * -0.5, spaceship.height * -0.5, spaceship.width, spaceship.height);
-    context.fillStyle = spaceship.color;
-    context.fill();
-    context.closePath();
+  Spaceship.prototype.drawSpaceship = function() {
+      this.context.save();
+      this.context.beginPath();
+      this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
+      this.context.rotate(this.spaceship.angle);
+      this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
+      this.context.fillStyle = this.spaceship.color;
+      this.context.fill();
+      this.context.closePath();
 
-    if(spaceship.engineOn)
-    {
-        context.beginPath();
-        context.moveTo(spaceship.width * -0.5, spaceship.height * 0.5);
-        context.lineTo(spaceship.width * 0.5, spaceship.height * 0.5);
-        context.lineTo(0, spaceship.height * 0.5 + Math.random() * 10);
-        context.lineTo(spaceship.width * -0.5, spaceship.height * 0.5);
-        context.closePath();
-        context.fillStyle = "orange";
-        context.fill();
-    }
-    context.restore();
-}
+      if(this.spaceship.engineOn) {
+          this.context.beginPath();
+          this.context.moveTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
+          this.context.lineTo(this.spaceship.width * 0.5, this.spaceship.height * 0.5);
+          this.context.lineTo(0, this.spaceship.height * 0.5 + Math.random() * 10);
+          this.context.lineTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
+          this.context.closePath();
+          this.context.fillStyle = "orange";
+          this.context.fill();
+      }
+      this.context.restore();
+  };
 
-function updateSpaceship()
-{
-    if(spaceship.rotatingRight)
-    {
-        spaceship.angle += Math.PI / 180;
-    }
-    else if(spaceship.rotatingLeft)
-    {
-        spaceship.angle -= Math.PI / 180;
+  Spaceship.prototype.updateSpaceship = function() {
+    var spaceship = this.spaceship;
+    spaceship.position.x -= spaceship.velocity.x;
+    spaceship.position.y -= spaceship.velocity.y;
+
+    if (spaceship.rotatingRight) {
+        spaceship.angle += Math.PI / 180 + 0.02;
+    } else if (spaceship.rotatingLeft) {
+        spaceship.angle -= Math.PI / 180 + 0.02;
     }
 
-    if(spaceship.engineOn)
-    {
-        spaceship.position.x += Math.sin(spaceship.angle);
-        spaceship.position.y -= Math.cos(spaceship.angle);
+    if (spaceship.engineOn) {
+        spaceship.velocity.x += 0.008 * Math.sin(-spaceship.angle);
+        spaceship.velocity.y += 0.008 * Math.cos(spaceship.angle);
     }
-}
+    spaceship.velocity.y -= 0.004;
+  };
 
-function keyLetGo(event)
-{
-    console.log(spaceship);
-    switch(event.keyCode)
-    {
-        case 37:
-            // Left Arrow key
-            spaceship.rotatingLeft = false;
-            break;
-        case 39:
-            // Right Arrow key
-            spaceship.rotatingRight = false;
-            break;
-        case 38:
-            // Up Arrow key
-            spaceship.engineOn = false;
-            break;
-    }
-}
-
-document.addEventListener('keyup', keyLetGo);
-
-function keyPressed(event)
-{
-    console.log(spaceship);
-    switch(event.keyCode)
-    {
-        case 37:
-            // Left Arrow key
-            spaceship.rotatingLeft = true;
-            break;
-        case 39:
-            // Right Arrow key
-            spaceship.rotatingRight = true;
-            break;
-        case 38:
-            // Up Arrow key
-            spaceship.engineOn = true;
-            break;
-    }
-}
-
-document.addEventListener('keydown', keyPressed);
+  module.exports = Spaceship;
