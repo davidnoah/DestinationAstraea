@@ -1,11 +1,12 @@
-var Spaceship = function(context) {
+var Spaceship = function(context, moon) {
   this.context = context;
+  this.moon = moon;
   this.spaceship = {
     color: "white",
     width: 8,
     height: 22,
     position: {x: 20, y: 20},
-    velocity: {x: -0.7, y: 0},
+    velocity: {x: -1.2, y: 0},
     angle: Math.PI / 2,
     engineOn: false,
     rotatingLeft: false,
@@ -17,13 +18,18 @@ var Spaceship = function(context) {
 
   Spaceship.prototype.drawSpaceship = function() {
       this.context.save();
-      this.context.beginPath();
-      this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
-      this.context.rotate(this.spaceship.angle);
-      this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
-      this.context.fillStyle = this.spaceship.color;
-      this.context.fill();
-      this.context.closePath();
+      if (this.spaceship.position.y >= 400) {
+        this.spaceship.velocity.x = 0;
+        this.spaceship.velocity.y = 0;
+      } else {
+        this.context.beginPath();
+        this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
+        this.context.rotate(this.spaceship.angle);
+        this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
+        this.context.fillStyle = this.spaceship.color;
+        this.context.fill();
+        this.context.closePath();
+     }
 
       if(this.spaceship.engineOn) {
           this.spaceship.fuel -= 1;
@@ -51,10 +57,10 @@ var Spaceship = function(context) {
     }
 
     if (spaceship.engineOn) {
-        spaceship.velocity.x += 0.008 * Math.sin(-spaceship.angle);
-        spaceship.velocity.y += 0.008 * Math.cos(spaceship.angle);
+        spaceship.velocity.x += 0.0035 * Math.sin(-spaceship.angle);
+        spaceship.velocity.y += 0.0035 * Math.cos(spaceship.angle);
     }
-    spaceship.velocity.y -= 0.004;
+    spaceship.velocity.y -= 0.0009;
   };
 
   module.exports = Spaceship;

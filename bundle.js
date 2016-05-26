@@ -50,7 +50,7 @@
 	var Moon = __webpack_require__(2);
 	
 	var moon = new Moon(context);
-	var spaceship = new Spaceship(context);
+	var spaceship = new Spaceship(context, moon);
 	
 	function draw() {
 	    context.beginPath();
@@ -103,14 +103,15 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	var Spaceship = function(context) {
+	var Spaceship = function(context, moon) {
 	  this.context = context;
+	  this.moon = moon;
 	  this.spaceship = {
 	    color: "white",
 	    width: 8,
 	    height: 22,
 	    position: {x: 20, y: 20},
-	    velocity: {x: -0.7, y: 0},
+	    velocity: {x: -1.2, y: 0},
 	    angle: Math.PI / 2,
 	    engineOn: false,
 	    rotatingLeft: false,
@@ -122,13 +123,18 @@
 	
 	  Spaceship.prototype.drawSpaceship = function() {
 	      this.context.save();
-	      this.context.beginPath();
-	      this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
-	      this.context.rotate(this.spaceship.angle);
-	      this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
-	      this.context.fillStyle = this.spaceship.color;
-	      this.context.fill();
-	      this.context.closePath();
+	      if (this.spaceship.position.y >= 400) {
+	        this.spaceship.velocity.x = 0;
+	        this.spaceship.velocity.y = 0;
+	      } else {
+	        this.context.beginPath();
+	        this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
+	        this.context.rotate(this.spaceship.angle);
+	        this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
+	        this.context.fillStyle = this.spaceship.color;
+	        this.context.fill();
+	        this.context.closePath();
+	     }
 	
 	      if(this.spaceship.engineOn) {
 	          this.spaceship.fuel -= 1;
@@ -156,10 +162,10 @@
 	    }
 	
 	    if (spaceship.engineOn) {
-	        spaceship.velocity.x += 0.008 * Math.sin(-spaceship.angle);
-	        spaceship.velocity.y += 0.008 * Math.cos(spaceship.angle);
+	        spaceship.velocity.x += 0.0035 * Math.sin(-spaceship.angle);
+	        spaceship.velocity.y += 0.0035 * Math.cos(spaceship.angle);
 	    }
-	    spaceship.velocity.y -= 0.004;
+	    spaceship.velocity.y -= 0.0009;
 	  };
 	
 	  module.exports = Spaceship;
@@ -174,13 +180,14 @@
 	  this.moon = {
 	    landingPads: [],
 	    moonStart: {x: 0, y: 400},
-	    moonEnd: {x: 1000, y: 400}
+	    moonEnd: {x: 1000, y: 400},
 	  };
 	};
 	
 	Moon.prototype.drawMoon = function() {
 	  var context = this.context;
 	  var moon = this.moon;
+	
 	  context.save();
 	  context.beginPath();
 	  context.moveTo(moon.moonStart.x, moon.moonStart.y);
