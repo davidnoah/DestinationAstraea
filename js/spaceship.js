@@ -17,32 +17,40 @@ var Spaceship = function(context, moon) {
 };
 
   Spaceship.prototype.drawSpaceship = function() {
-      this.context.save();
-      if (this.spaceship.position.y >= 400) {
-        this.spaceship.velocity.x = 0;
-        this.spaceship.velocity.y = 0;
+      var spaceship = this.spaceship;
+      var context = this.context;
+      context.save();
+      if (spaceship.position.y >= 400) {
+        spaceship.velocity.x = 0;
+        spaceship.velocity.y = 0;
       } else {
-        this.context.beginPath();
-        this.context.translate(this.spaceship.position.x, this.spaceship.position.y);
-        this.context.rotate(this.spaceship.angle);
-        this.context.rect(this.spaceship.width * -0.5, this.spaceship.height * -0.5, this.spaceship.width, this.spaceship.height);
-        this.context.fillStyle = this.spaceship.color;
-        this.context.fill();
-        this.context.closePath();
+        context.beginPath();
+        context.translate(spaceship.position.x, spaceship.position.y);
+        context.rotate(spaceship.angle);
+        context.rect(spaceship.width * -0.5, spaceship.height * -0.5, spaceship.width, spaceship.height);
+        context.fillStyle = spaceship.color;
+        context.fill();
+        context.closePath();
      }
 
-      if(this.spaceship.engineOn) {
-          this.spaceship.fuel -= 1;
-          this.context.beginPath();
-          this.context.moveTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
-          this.context.lineTo(this.spaceship.width * 0.5, this.spaceship.height * 0.5);
-          this.context.lineTo(0, this.spaceship.height * 0.5 + Math.random() * 10);
-          this.context.lineTo(this.spaceship.width * -0.5, this.spaceship.height * 0.5);
-          this.context.closePath();
-          this.context.fillStyle = "white";
-          this.context.fill();
+      if(spaceship.engineOn) {
+        this.flameOn();
       }
-      this.context.restore();
+      context.restore();
+  };
+
+  Spaceship.prototype.flameOn = function() {
+    var spaceship = this.spaceship;
+    var context = this.context;
+    spaceship.fuel -= 1;
+    context.beginPath();
+    context.moveTo(spaceship.width * -0.5, spaceship.height * 0.5);
+    context.lineTo(spaceship.width * 0.5, spaceship.height * 0.5);
+    context.lineTo(0, spaceship.height * 0.5 + Math.random() * 10);
+    context.lineTo(spaceship.width * -0.5, spaceship.height * 0.5);
+    context.closePath();
+    context.fillStyle = "white";
+    context.fill();
   };
 
   Spaceship.prototype.updateSpaceship = function() {
