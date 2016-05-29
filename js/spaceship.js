@@ -22,15 +22,8 @@ var Spaceship = function(context) {
         this.land();
       } else {
         context.save();
-        context.beginPath();
-        context.translate(spaceship.position.x, spaceship.position.y);
-        context.rotate(spaceship.angle);
-        context.rect(spaceship.width * -0.5, spaceship.height * -0.5, spaceship.width, spaceship.height);
-        context.fillStyle = spaceship.color;
-        context.fill();
-        context.closePath();
+        this.buildRect();
       }
-
 
       if(spaceship.engineOn) {
         this.flameOn();
@@ -38,12 +31,9 @@ var Spaceship = function(context) {
       context.restore();
   };
 
-  Spaceship.prototype.land = function() {
+  Spaceship.prototype.buildRect = function() {
     var spaceship = this.spaceship;
     var context = this.context;
-    spaceship.position.y = 399.9;
-    spaceship.velocity.x = 0;
-    spaceship.velocity.y = 0;
     context.beginPath();
     context.translate(spaceship.position.x, spaceship.position.y);
     context.rotate(spaceship.angle);
@@ -51,6 +41,15 @@ var Spaceship = function(context) {
     context.fillStyle = spaceship.color;
     context.fill();
     context.closePath();
+  };
+
+  Spaceship.prototype.land = function() {
+    var spaceship = this.spaceship;
+    var context = this.context;
+    spaceship.position.y = 399.9;
+    spaceship.velocity.x -= 0.035;
+    spaceship.velocity.y = 0;
+    this.buildRect();
   };
 
   Spaceship.prototype.flameOn = function() {
