@@ -50,7 +50,7 @@
 	var Moon = __webpack_require__(2);
 	
 	var moon = new Moon(context);
-	var spaceship = new Spaceship(context, moon);
+	var spaceship = new Spaceship(context);
 	
 	function draw() {
 	    context.beginPath();
@@ -58,8 +58,9 @@
 	    context.fillStyle = "black";
 	    context.fill();
 	    context.closePath();
-	
 	    context.beginPath();
+	
+	
 	    spaceship.updateSpaceship();
 	    spaceship.drawSpaceship();
 	    moon.drawMoon();
@@ -103,9 +104,8 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	var Spaceship = function(context, moon) {
+	var Spaceship = function(context) {
 	  this.context = context;
-	  this.moon = moon;
 	  this.spaceship = {
 	    color: "white",
 	    width: 8,
@@ -124,20 +124,10 @@
 	  Spaceship.prototype.drawSpaceship = function() {
 	      var spaceship = this.spaceship;
 	      var context = this.context;
-	      context.save();
-	      var corners = {
-	        topLeft: [
-	          spaceship.position.y - (spaceship.height / 2),
-	          spaceship.position.x - (spaceship.width / 2)
-	        ],
-	        topRight: [],
-	        bottomLeft: [],
-	        bottomRight: []
-	      };
 	      if (spaceship.position.y >= 400) {
-	        spaceship.velocity.x = 0;
-	        spaceship.velocity.y = 0;
+	        this.land();
 	      } else {
+	        context.save();
 	        context.beginPath();
 	        context.translate(spaceship.position.x, spaceship.position.y);
 	        context.rotate(spaceship.angle);
@@ -145,20 +135,42 @@
 	        context.fillStyle = spaceship.color;
 	        context.fill();
 	        context.closePath();
-	     }
+	      }
+	
 	
 	      if(spaceship.engineOn) {
-	          spaceship.fuel -= 1;
-	          context.beginPath();
-	          context.moveTo(spaceship.width * -0.5, spaceship.height * 0.5);
-	          context.lineTo(spaceship.width * 0.5, spaceship.height * 0.5);
-	          context.lineTo(0, spaceship.height * 0.5 + Math.random() * 10);
-	          context.lineTo(spaceship.width * -0.5, spaceship.height * 0.5);
-	          context.closePath();
-	          context.fillStyle = "white";
-	          context.fill();
+	        this.flameOn();
 	      }
 	      context.restore();
+	  };
+	
+	  Spaceship.prototype.land = function() {
+	    var spaceship = this.spaceship;
+	    var context = this.context;
+	    spaceship.position.y = 399.9;
+	    spaceship.velocity.x = 0;
+	    spaceship.velocity.y = 0;
+	    context.beginPath();
+	    context.translate(spaceship.position.x, spaceship.position.y);
+	    context.rotate(spaceship.angle);
+	    context.rect(spaceship.width * -0.5, spaceship.height * -0.5, spaceship.width, spaceship.height);
+	    context.fillStyle = spaceship.color;
+	    context.fill();
+	    context.closePath();
+	  };
+	
+	  Spaceship.prototype.flameOn = function() {
+	    var spaceship = this.spaceship;
+	    var context = this.context;
+	    spaceship.fuel -= 1;
+	    context.beginPath();
+	    context.moveTo(spaceship.width * -0.5, spaceship.height * 0.5);
+	    context.lineTo(spaceship.width * 0.5, spaceship.height * 0.5);
+	    context.lineTo(0, spaceship.height * 0.5 + Math.random() * 10);
+	    context.lineTo(spaceship.width * -0.5, spaceship.height * 0.5);
+	    context.closePath();
+	    context.fillStyle = "white";
+	    context.fill();
 	  };
 	
 	  Spaceship.prototype.updateSpaceship = function() {

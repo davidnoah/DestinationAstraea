@@ -1,6 +1,5 @@
-var Spaceship = function(context, moon) {
+var Spaceship = function(context) {
   this.context = context;
-  this.moon = moon;
   this.spaceship = {
     color: "white",
     width: 8,
@@ -19,11 +18,10 @@ var Spaceship = function(context, moon) {
   Spaceship.prototype.drawSpaceship = function() {
       var spaceship = this.spaceship;
       var context = this.context;
-      context.save();
       if (spaceship.position.y >= 400) {
-        spaceship.velocity.x = 0;
-        spaceship.velocity.y = 0;
+        this.land();
       } else {
+        context.save();
         context.beginPath();
         context.translate(spaceship.position.x, spaceship.position.y);
         context.rotate(spaceship.angle);
@@ -31,12 +29,28 @@ var Spaceship = function(context, moon) {
         context.fillStyle = spaceship.color;
         context.fill();
         context.closePath();
-     }
+      }
+
 
       if(spaceship.engineOn) {
         this.flameOn();
       }
       context.restore();
+  };
+
+  Spaceship.prototype.land = function() {
+    var spaceship = this.spaceship;
+    var context = this.context;
+    spaceship.position.y = 399.9;
+    spaceship.velocity.x = 0;
+    spaceship.velocity.y = 0;
+    context.beginPath();
+    context.translate(spaceship.position.x, spaceship.position.y);
+    context.rotate(spaceship.angle);
+    context.rect(spaceship.width * -0.5, spaceship.height * -0.5, spaceship.width, spaceship.height);
+    context.fillStyle = spaceship.color;
+    context.fill();
+    context.closePath();
   };
 
   Spaceship.prototype.flameOn = function() {
