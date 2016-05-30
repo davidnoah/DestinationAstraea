@@ -102,8 +102,11 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	var Explosion = __webpack_require__(3);
+	var explosion = new Explosion();
+	
 	var Spaceship = function(context) {
 	  this.context = context;
 	  this.spaceship = {
@@ -125,7 +128,9 @@
 	      var spaceship = this.spaceship;
 	      var context = this.context;
 	      if (spaceship.position.y >= 400) {
-	        this.land();
+	        explosion.updateExplosion(10, context);
+	        this.explode();
+	        // this.land();
 	      } else {
 	        context.save();
 	        this.buildRect();
@@ -135,6 +140,15 @@
 	        this.flameOn();
 	      }
 	      context.restore();
+	  };
+	
+	  Spaceship.prototype.explode = function() {
+	    var spaceship = this.spaceship;
+	    spaceship.position.y = 400;
+	    spaceship.velocity.x = 0;
+	    spaceship.velocity.y = 0;
+	    explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
+	    explosion.createExplosion(spaceship.position.x, spaceship.position.y, "#E3701A");
 	  };
 	
 	  Spaceship.prototype.buildRect = function() {
@@ -151,9 +165,8 @@
 	
 	  Spaceship.prototype.land = function() {
 	    var spaceship = this.spaceship;
-	    var context = this.context;
-	    spaceship.position.y = 399.9;
-	    spaceship.velocity.x -= 0.035;
+	    spaceship.position.y = 400;
+	    spaceship.velocity.x = 0;
 	    spaceship.velocity.y = 0;
 	    this.buildRect();
 	  };
@@ -220,6 +233,104 @@
 	};
 	
 	module.exports = Moon;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Particle = __webpack_require__(4);
+	var randomFloat = function(min, max) {
+		return min + Math.random()*(max-min);
+	};
+	
+	var Explosion = function() {
+	  this.particles = [];
+	};
+	
+	Explosion.prototype.createExplosion = function(x, y, color) {
+		var minSize = 10;
+		var maxSize = 30;
+		var count = 10;
+		var minSpeed = 60.0;
+		var maxSpeed = 200.0;
+		var minScaleSpeed = 1.0;
+		var maxScaleSpeed = 4.0;
+	
+		for (var angle=0; angle<360; angle += Math.round(360/count))
+		{
+			var particle = new Particle();
+	
+			particle.x = x;
+			particle.y = y;
+	
+			particle.radius = randomFloat(minSize, maxSize);
+	
+			particle.color = color;
+	
+			particle.scaleSpeed = randomFloat(minScaleSpeed, maxScaleSpeed);
+	
+			var speed = randomFloat(minSpeed, maxSpeed);
+	
+			particle.velocityX = speed * Math.cos(angle * Math.PI / 180.0);
+			particle.velocityY = speed * Math.sin(angle * Math.PI / 180.0);
+	
+			this.particles.push(particle);
+		}
+	};
+	
+	Explosion.prototype.updateExplosion = function(frameDelay, context) {
+		for (var i=0; i < this.particles.length; i++) {
+			var particle = this.particles[i];
+	
+			particle.updateParticle(frameDelay);
+			particle.drawParticle(context);
+		}
+	};
+	
+	module.exports = Explosion;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	var Particle = function() {
+		this.scale = 1.0;
+		this.x = 0;
+		this.y = 0;
+		this.radius = 20;
+		this.color = "white";
+		this.velocityX = 0;
+		this.velocityY = 0;
+		this.scaleSpeed = 0.5;
+	};
+	
+		Particle.prototype.updateParticle = function(ms) {
+			this.scale -= this.scaleSpeed * ms / 1000.0;
+			if (this.scale <= 0) {
+				this.scale = 0;
+			}
+			this.x += this.velocityX * ms/1000.0;
+			this.y += this.velocityY * ms/1000.0;
+		};
+	
+		Particle.prototype.drawParticle = function(context) {
+			context.save();
+	
+			context.beginPath();
+	    context.translate(this.x, this.y);
+	    context.scale(this.scale, this.scale);
+			context.arc(0, 0, this.radius, 0, Math.PI*2, true);
+	    context.fillStyle = this.color;
+	    context.fill();
+			context.closePath();
+	
+			context.restore();
+		};
+	
+	
+	module.exports = Particle;
 
 
 /***/ }

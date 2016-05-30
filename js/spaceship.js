@@ -1,3 +1,6 @@
+var Explosion = require('./explosion.js');
+var explosion = new Explosion();
+
 var Spaceship = function(context) {
   this.context = context;
   this.spaceship = {
@@ -19,7 +22,9 @@ var Spaceship = function(context) {
       var spaceship = this.spaceship;
       var context = this.context;
       if (spaceship.position.y >= 400) {
-        this.land();
+        explosion.updateExplosion(10, context);
+        this.explode();
+        // this.land();
       } else {
         context.save();
         this.buildRect();
@@ -29,6 +34,15 @@ var Spaceship = function(context) {
         this.flameOn();
       }
       context.restore();
+  };
+
+  Spaceship.prototype.explode = function() {
+    var spaceship = this.spaceship;
+    spaceship.position.y = 400;
+    spaceship.velocity.x = 0;
+    spaceship.velocity.y = 0;
+    explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
+    explosion.createExplosion(spaceship.position.x, spaceship.position.y, "#E3701A");
   };
 
   Spaceship.prototype.buildRect = function() {
@@ -45,9 +59,8 @@ var Spaceship = function(context) {
 
   Spaceship.prototype.land = function() {
     var spaceship = this.spaceship;
-    var context = this.context;
-    spaceship.position.y = 399.9;
-    spaceship.velocity.x -= 0.035;
+    spaceship.position.y = 400;
+    spaceship.velocity.x = 0;
     spaceship.velocity.y = 0;
     this.buildRect();
   };
