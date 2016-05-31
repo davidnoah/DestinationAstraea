@@ -16,9 +16,17 @@ function draw() {
 
 
     moon.drawMoon();
+    drawFuel();
     spaceship.updateSpaceship();
     spaceship.drawSpaceship();
     requestAnimationFrame(draw);
+}
+
+function drawFuel() {
+  context.beginPath();
+  context.fillStyle = "rgb(224,224,224)";
+  context.fillText("Fuel: " + spaceship.spaceship.fuel, 10, 10);
+  context.closePath();
 }
 
 function keyLetGo(event) {
