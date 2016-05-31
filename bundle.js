@@ -133,7 +133,8 @@
 	      if (color.rgb === "rgb(255,255,255)") {
 	        explosion.updateExplosion(10, context);
 	        this.explode();
-	        // this.land();
+	      } else if (color.rgb === "rgb(255,0,0)") {
+	        this.land();
 	      } else {
 	        context.save();
 	        this.buildRect();
@@ -167,10 +168,14 @@
 	
 	  Spaceship.prototype.land = function() {
 	    var spaceship = this.spaceship;
-	    spaceship.position.y = 400;
 	    spaceship.velocity.x = 0;
 	    spaceship.velocity.y = 0;
+	    spaceship.angle = 2 * Math.PI;
 	    this.buildRect();
+	  };
+	
+	  Spaceship.prototype.assessLanding = function() {
+	
 	  };
 	
 	  Spaceship.prototype.flameOn = function() {
