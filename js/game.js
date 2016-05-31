@@ -4,7 +4,7 @@ var Spaceship = require('./spaceship.js');
 var Moon = require('./moon.js');
 
 var moon = new Moon(context);
-var spaceship = new Spaceship(context);
+var spaceship = new Spaceship(context, moon);
 
 function draw() {
     context.beginPath();
@@ -15,9 +15,9 @@ function draw() {
     context.beginPath();
 
 
+    moon.drawMoon();
     spaceship.updateSpaceship();
     spaceship.drawSpaceship();
-    moon.drawMoon();
     requestAnimationFrame(draw);
 }
 

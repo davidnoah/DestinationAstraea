@@ -1,12 +1,14 @@
 var Explosion = require('./explosion.js');
 var explosion = new Explosion();
+var getCanvasPixelColor = require('get-canvas-pixel-color');
 
-var Spaceship = function(context) {
+var Spaceship = function(context, moon) {
   this.context = context;
+  this.moon = moon;
   this.spaceship = {
     color: "white",
-    width: 8,
-    height: 22,
+    width: 4,
+    height: 11,
     position: {x: 20, y: 20},
     velocity: {x: -1.2, y: 0},
     angle: Math.PI / 2,
@@ -21,7 +23,8 @@ var Spaceship = function(context) {
   Spaceship.prototype.drawSpaceship = function() {
       var spaceship = this.spaceship;
       var context = this.context;
-      if (spaceship.position.y >= 400) {
+      var color = getCanvasPixelColor(context, spaceship.position.x, spaceship.position.y);
+      if (color.rgb === "rgb(255,255,255)") {
         explosion.updateExplosion(10, context);
         this.explode();
         // this.land();
@@ -38,7 +41,6 @@ var Spaceship = function(context) {
 
   Spaceship.prototype.explode = function() {
     var spaceship = this.spaceship;
-    spaceship.position.y = 400;
     spaceship.velocity.x = 0;
     spaceship.velocity.y = 0;
     explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);

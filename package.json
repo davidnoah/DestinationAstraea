@@ -1,0 +1,24 @@
+{
+  "name": "DestinationAstraea",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bundle.js",
+  "dependencies": {
+    "get-canvas-pixel-color": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidnoah/DestinationAstraea.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidnoah/DestinationAstraea/issues"
+  },
+  "homepage": "https://github.com/davidnoah/DestinationAstraea#readme"
+}
