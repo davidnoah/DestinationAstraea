@@ -1,12 +1,13 @@
-var canvas = document.getElementById("game");
-var context = canvas.getContext("2d");
-var Spaceship = require('./spaceship.js');
-var Moon = require('./moon.js');
+var Game = function(context, spaceship, moon) {
+  this.context = context;
+  this.playing = false;
+  this.moon = moon;
+  this.spaceship = spaceship;
+};
 
-var moon = new Moon(context);
-var spaceship = new Spaceship(context, moon);
-
-function draw() {
+Game.prototype.draw = function() {
+    var context = this.context;
+    var spaceship = this.spaceship;
     context.beginPath();
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "black";
@@ -14,7 +15,6 @@ function draw() {
     context.closePath();
     context.beginPath();
     if (spaceship.spaceship.gameOver === true) {
-      debugger;
       renderGameOver();
     }
     moon.drawMoon();
@@ -22,57 +22,30 @@ function draw() {
     spaceship.updateSpaceship();
     spaceship.drawSpaceship();
     requestAnimationFrame(draw);
-}
+};
 
-function restartPlay() {
+Game.prototype.restartPlay = function() {
   cancelAnimationFrame(draw);
   draw();
-}
+};
 
-function drawFuel() {
+Game.prototype.drawFuel = function() {
+  var context = this.context;
+  var spaceship = this.spaceship;
   context.beginPath();
   context.fillStyle = "rgb(224,224,224)";
   context.fillText("Fuel: " + spaceship.spaceship.fuel, 10, 10);
   context.closePath();
-}
+};
 
-function renderGameOver() {
+Game.prototype.renderGameOver = function() {
+  var context = this.context;
   context.beginPath();
   context.fillStyle = "rgb(224,224,224)";
   context.textAlign = "center";
   context.font = "30px Arial";
   context.fillText("Game Over! You Lose", 500, 200);
   context.closePath();
-}
+};
 
-function keyLetGo(event) {
-    switch(event.keyCode) {
-        case 37:
-            spaceship.spaceship.rotatingLeft = false;
-            break;
-        case 39:
-            spaceship.spaceship.rotatingRight = false;
-            break;
-        case 38:
-            spaceship.spaceship.engineOn = false;
-            break;
-    }
-}
-document.addEventListener('keyup', keyLetGo);
-
-function keyPressed(event) {
-    switch(event.keyCode) {
-        case 37:
-            spaceship.spaceship.rotatingLeft = true;
-            break;
-        case 39:
-            spaceship.spaceship.rotatingRight = true;
-            break;
-        case 38:
-            spaceship.spaceship.engineOn = true;
-            break;
-    }
-}
-document.addEventListener('keydown', keyPressed);
-
-draw();
+module.exports = Game;
