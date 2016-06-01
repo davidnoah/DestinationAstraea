@@ -13,8 +13,10 @@ function draw() {
     context.fill();
     context.closePath();
     context.beginPath();
-
-
+    if (spaceship.spaceship.gameOver === true) {
+      debugger;
+      renderGameOver();
+    }
     moon.drawMoon();
     drawFuel();
     spaceship.updateSpaceship();
@@ -22,10 +24,24 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
+function restartPlay() {
+  cancelAnimationFrame(draw);
+  draw();
+}
+
 function drawFuel() {
   context.beginPath();
   context.fillStyle = "rgb(224,224,224)";
   context.fillText("Fuel: " + spaceship.spaceship.fuel, 10, 10);
+  context.closePath();
+}
+
+function renderGameOver() {
+  context.beginPath();
+  context.fillStyle = "rgb(224,224,224)";
+  context.textAlign = "center";
+  context.font = "30px Arial";
+  context.fillText("Game Over! You Lose", 500, 200);
   context.closePath();
 }
 

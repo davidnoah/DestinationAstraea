@@ -47,7 +47,7 @@
 	var canvas = document.getElementById("game");
 	var context = canvas.getContext("2d");
 	var Spaceship = __webpack_require__(1);
-	var Moon = __webpack_require__(4);
+	var Moon = __webpack_require__(5);
 	
 	var moon = new Moon(context);
 	var spaceship = new Spaceship(context, moon);
@@ -59,8 +59,10 @@
 	    context.fill();
 	    context.closePath();
 	    context.beginPath();
-	
-	
+	    if (spaceship.spaceship.gameOver === true) {
+	      debugger;
+	      renderGameOver();
+	    }
 	    moon.drawMoon();
 	    drawFuel();
 	    spaceship.updateSpaceship();
@@ -68,10 +70,24 @@
 	    requestAnimationFrame(draw);
 	}
 	
+	function restartPlay() {
+	  cancelAnimationFrame(draw);
+	  draw();
+	}
+	
 	function drawFuel() {
 	  context.beginPath();
 	  context.fillStyle = "rgb(224,224,224)";
 	  context.fillText("Fuel: " + spaceship.spaceship.fuel, 10, 10);
+	  context.closePath();
+	}
+	
+	function renderGameOver() {
+	  context.beginPath();
+	  context.fillStyle = "rgb(224,224,224)";
+	  context.textAlign = "center";
+	  context.font = "30px Arial";
+	  context.fillText("Game Over! You Lose", 500, 200);
 	  context.closePath();
 	}
 	
@@ -114,7 +130,7 @@
 
 	var Explosion = __webpack_require__(2);
 	var explosion = new Explosion();
-	var getCanvasPixelColor = __webpack_require__(5);
+	var getCanvasPixelColor = __webpack_require__(4);
 	
 	var Spaceship = function(context, moon) {
 	  this.context = context;
@@ -129,7 +145,7 @@
 	    engineOn: false,
 	    rotatingLeft: false,
 	    rotatingRight: false,
-	    crashed: false,
+	    gameOver: false,
 	    fuel: 500
 	  };
 	};
@@ -159,6 +175,7 @@
 	
 	Spaceship.prototype.explode = function() {
 	  var spaceship = this.spaceship;
+	  spaceship.gameOver = true;
 	  spaceship.velocity.x = 0;
 	  spaceship.velocity.y = 0;
 	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
@@ -328,6 +345,48 @@
 /* 4 */
 /***/ function(module, exports) {
 
+	'use strict';
+	/**
+	 * getCanvasPixelColor
+	 * @param  {canvas element|context} ctx  The canvas from which to take the color
+	 * @param  {int} x                       The x coordinate of the pixel to read
+	 * @param  {int} y                       The y coordinate of the pixel to read
+	 * @return {array/object}                The rgb values of the read pixel
+	 */
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	
+	exports['default'] = function (ctx, x, y) {
+		// if it's not a context, it's probably a canvas element
+		if (!ctx.getImageData) {
+			ctx = ctx.getContext('2d');
+		}
+	
+		// extract the pixel data from the canvas
+		var pixel = ctx.getImageData(x, y, 1, 1).data;
+	
+		// set each color property
+		pixel.r = pixel[0];
+		pixel.b = pixel[1];
+		pixel.g = pixel[2];
+		pixel.a = pixel[3];
+	
+		// convenience CSS strings
+		pixel.rgb = 'rgb(' + pixel.r + ',' + pixel.g + ',' + pixel.b + ')';
+		pixel.rgba = 'rgb(' + pixel.r + ',' + pixel.g + ',' + pixel.b + ',' + pixel.a + ')';
+	
+		return pixel;
+	};
+	
+	module.exports = exports['default'];
+	
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
 	var Moon = function(context) {
 	  this.context = context;
 	  this.moon = {
@@ -400,48 +459,6 @@
 	};
 	
 	module.exports = Moon;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-	/**
-	 * getCanvasPixelColor
-	 * @param  {canvas element|context} ctx  The canvas from which to take the color
-	 * @param  {int} x                       The x coordinate of the pixel to read
-	 * @param  {int} y                       The y coordinate of the pixel to read
-	 * @return {array/object}                The rgb values of the read pixel
-	 */
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-	
-	exports['default'] = function (ctx, x, y) {
-		// if it's not a context, it's probably a canvas element
-		if (!ctx.getImageData) {
-			ctx = ctx.getContext('2d');
-		}
-	
-		// extract the pixel data from the canvas
-		var pixel = ctx.getImageData(x, y, 1, 1).data;
-	
-		// set each color property
-		pixel.r = pixel[0];
-		pixel.b = pixel[1];
-		pixel.g = pixel[2];
-		pixel.a = pixel[3];
-	
-		// convenience CSS strings
-		pixel.rgb = 'rgb(' + pixel.r + ',' + pixel.g + ',' + pixel.b + ')';
-		pixel.rgba = 'rgb(' + pixel.r + ',' + pixel.g + ',' + pixel.b + ',' + pixel.a + ')';
-	
-		return pixel;
-	};
-	
-	module.exports = exports['default'];
-	
 
 
 /***/ }

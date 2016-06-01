@@ -15,7 +15,7 @@ var Spaceship = function(context, moon) {
     engineOn: false,
     rotatingLeft: false,
     rotatingRight: false,
-    crashed: false,
+    gameOver: false,
     fuel: 500
   };
 };
@@ -45,6 +45,7 @@ Spaceship.prototype.drawSpaceship = function() {
 
 Spaceship.prototype.explode = function() {
   var spaceship = this.spaceship;
+  spaceship.gameOver = true;
   spaceship.velocity.x = 0;
   spaceship.velocity.y = 0;
   explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
