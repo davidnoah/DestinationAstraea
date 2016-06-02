@@ -49,7 +49,7 @@ Spaceship.prototype.explode = function() {
   spaceship.velocity.x = 0;
   spaceship.velocity.y = 0;
   explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
-  explosion.createExplosion(spaceship.position.x, spaceship.position.y, "#E3701A");
+  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
 };
 
 Spaceship.prototype.buildRect = function() {

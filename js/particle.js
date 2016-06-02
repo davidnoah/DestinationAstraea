@@ -1,5 +1,5 @@
 var Particle = function() {
-	this.scale = 1.0;
+	this.scale = 0.5;
 	this.x = 0;
 	this.y = 0;
 	this.radius = 20;

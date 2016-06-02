@@ -238,7 +238,7 @@
 	  spaceship.velocity.x = 0;
 	  spaceship.velocity.y = 0;
 	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
-	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, "#E3701A");
+	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
 	};
 	
 	Spaceship.prototype.buildRect = function() {
@@ -324,17 +324,13 @@
 		var minScaleSpeed = 1.0;
 		var maxScaleSpeed = 4.0;
 	
-		for (var angle=0; angle<360; angle += Math.round(360/count))
-		{
+		for (var angle=0; angle<360; angle += Math.round(360/count)) {
 			var particle = new Particle();
 	
 			particle.x = x;
 			particle.y = y;
-	
 			particle.radius = randomFloat(minSize, maxSize);
-	
 			particle.color = color;
-	
 			particle.scaleSpeed = randomFloat(minScaleSpeed, maxScaleSpeed);
 	
 			var speed = randomFloat(minSpeed, maxSpeed);
@@ -373,7 +369,7 @@
 /***/ function(module, exports) {
 
 	var Particle = function() {
-		this.scale = 1.0;
+		this.scale = 0.5;
 		this.x = 0;
 		this.y = 0;
 		this.radius = 20;
