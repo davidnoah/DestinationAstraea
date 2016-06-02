@@ -1,9 +1,12 @@
-var Game = function(canvas, context, spaceship, moon) {
+var Spaceship = require('./spaceship.js');
+var Moon = require('./moon.js');
+
+var Game = function(canvas, context) {
   this.canvas = canvas;
   this.context = context;
   this.playing = false;
-  this.moon = moon;
-  this.spaceship = spaceship;
+  this.moon = new Moon(context);
+  this.spaceship = new Spaceship(context, this.moon);
 
   document.addEventListener('keyup', this.keyLetGo.bind(this));
   document.addEventListener('keydown', this.keyPressed.bind(this));
@@ -23,7 +26,6 @@ Game.prototype.draw = function() {
     if (this.playing === true) {
       context.beginPath();
       if (spaceship.spaceship.gameOver === true) {
-        cancelAnimationFrame(this.draw.bind(this));
         this.renderGameOver();
       }
       moon.drawMoon();
@@ -54,7 +56,10 @@ Game.prototype.displayIntro = function() {
 };
 
 Game.prototype.restartPlay = function() {
-  this.spaceship.spaceship.gameOver = false;
+  var context = this.context;
+  this.moon = new Moon(context);
+  this.spaceship = new Spaceship(context, this.moon);
+  context.clearRect(0, 0, canvas.width, canvas.height);
   this.draw();
 };
 

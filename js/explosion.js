@@ -39,12 +39,22 @@ Explosion.prototype.createExplosion = function(x, y, color) {
 };
 
 Explosion.prototype.updateExplosion = function(frameDelay, context) {
+	this.garbageCollectParticles();
 	for (var i=0; i < this.particles.length; i++) {
 		var particle = this.particles[i];
-
 		particle.updateParticle(frameDelay);
 		particle.drawParticle(context);
 	}
+};
+
+Explosion.prototype.garbageCollectParticles = function() {
+	var stillAlive = [];
+	this.particles.forEach(function(particle) {
+		if (particle.scale !== 0) {
+			stillAlive.push(particle);
+		}
+	});
+	this.particles = stillAlive;
 };
 
 module.exports = Explosion;

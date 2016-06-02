@@ -47,13 +47,10 @@
 	var canvas = document.getElementById("game");
 	var context = canvas.getContext("2d");
 	var Game = __webpack_require__(1);
-	var Spaceship = __webpack_require__(2);
-	var Moon = __webpack_require__(6);
+	
 	
 	function startGame() {
-	  var moon = new Moon(context);
-	  var spaceship = new Spaceship(context, moon);
-	  var game = new Game(canvas, context, spaceship, moon);
+	  var game = new Game(canvas, context);
 	
 	  game.draw();
 	}
@@ -63,14 +60,17 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var Game = function(canvas, context, spaceship, moon) {
+	var Spaceship = __webpack_require__(2);
+	var Moon = __webpack_require__(6);
+	
+	var Game = function(canvas, context) {
 	  this.canvas = canvas;
 	  this.context = context;
 	  this.playing = false;
-	  this.moon = moon;
-	  this.spaceship = spaceship;
+	  this.moon = new Moon(context);
+	  this.spaceship = new Spaceship(context, this.moon);
 	
 	  document.addEventListener('keyup', this.keyLetGo.bind(this));
 	  document.addEventListener('keydown', this.keyPressed.bind(this));
@@ -90,7 +90,6 @@
 	    if (this.playing === true) {
 	      context.beginPath();
 	      if (spaceship.spaceship.gameOver === true) {
-	        cancelAnimationFrame(this.draw.bind(this));
 	        this.renderGameOver();
 	      }
 	      moon.drawMoon();
@@ -121,7 +120,10 @@
 	};
 	
 	Game.prototype.restartPlay = function() {
-	  this.spaceship.spaceship.gameOver = false;
+	  var context = this.context;
+	  this.moon = new Moon(context);
+	  this.spaceship = new Spaceship(context, this.moon);
+	  context.clearRect(0, 0, canvas.width, canvas.height);
 	  this.draw();
 	};
 	
@@ -345,12 +347,22 @@
 	};
 	
 	Explosion.prototype.updateExplosion = function(frameDelay, context) {
+		this.garbageCollectParticles();
 		for (var i=0; i < this.particles.length; i++) {
 			var particle = this.particles[i];
-	
 			particle.updateParticle(frameDelay);
 			particle.drawParticle(context);
 		}
+	};
+	
+	Explosion.prototype.garbageCollectParticles = function() {
+		var stillAlive = [];
+		this.particles.forEach(function(particle) {
+			if (particle.scale !== 0) {
+				stillAlive.push(particle);
+			}
+		});
+		this.particles = stillAlive;
 	};
 	
 	module.exports = Explosion;
