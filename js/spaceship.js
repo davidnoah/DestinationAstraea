@@ -16,7 +16,8 @@ var Spaceship = function(context, moon) {
     rotatingLeft: false,
     rotatingRight: false,
     gameOver: false,
-    fuel: 500
+    won: false,
+    fuel: 800
   };
 };
 
@@ -30,8 +31,13 @@ Spaceship.prototype.drawSpaceship = function() {
     } else if (color.rgb === "rgb(255,255,255)") {
       explosion.updateExplosion(10, context);
       this.explode();
-    } else if (color.rgb === "rgb(255,0,0)") {
-      this.land();
+    } else if (color.rgb === "rgb(254,254,254)") {
+      if (this.checkSpeed()) {
+        this.land();
+      } else {
+        explosion.updateExplosion(10, context);
+        this.explode();
+      }
     } else {
       context.save();
       this.buildRect();
@@ -41,6 +47,16 @@ Spaceship.prototype.drawSpaceship = function() {
       this.flameOn();
     }
     context.restore();
+};
+
+Spaceship.prototype.checkSpeed = function() {
+  var spaceship = this.spaceship;
+  if (Math.round(spaceship.velocity.y * 100) <= 20 && Math.round(spaceship.velocity.x * 100) <= 20 &&
+      Math.round(spaceship.velocity.y >= -20) && Math.round(spaceship.velocity.x * 100) >= -20) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 Spaceship.prototype.explode = function() {
@@ -69,11 +85,8 @@ Spaceship.prototype.land = function() {
   spaceship.velocity.x = 0;
   spaceship.velocity.y = 0;
   spaceship.angle = 2 * Math.PI;
+  spaceship.gameOver = true;
   this.buildRect();
-};
-
-Spaceship.prototype.assessLanding = function() {
-
 };
 
 Spaceship.prototype.flameOn = function() {

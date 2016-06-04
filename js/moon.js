@@ -7,8 +7,10 @@ var Moon = function(context) {
       [50, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       "landing",
       [150, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+      [180, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       [225, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       "landing",
+      [260, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       [275, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       "landing",
       [410, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
@@ -16,6 +18,7 @@ var Moon = function(context) {
       [460, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       "landing",
       [580, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+      "landing",
       [640, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
       "landing",
       [730, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
@@ -62,7 +65,7 @@ Moon.prototype.drawLandingZone = function(endCoord) {
   context.beginPath();
   context.moveTo(endCoord[0] - 15, endCoord[1]);
   context.lineTo(endCoord[0], endCoord[1]);
-  context.strokeStyle = "rgb(255,0,0)";
+  context.strokeStyle = "rgb(254,254,254)";
   context.lineWidth = 2;
   context.stroke();
   context.beginPath();
