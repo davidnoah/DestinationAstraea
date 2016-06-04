@@ -97,6 +97,8 @@ Game.prototype.renderGameOverLoss = function() {
   context.textAlign = "center";
   context.font = "20px Quicksand";
   context.fillText("Game Over! You Lose", this.canvas.width / 2, 200);
+  context.font = "15px Quicksand";
+  context.fillText("Click to Play Again", this.canvas.width / 2, 230);
   context.closePath();
 
   document.getElementById('game').removeEventListener("click", this.startPlaying.bind(this));
@@ -111,6 +113,8 @@ Game.prototype.renderGameOverWon = function() {
   context.textAlign = "center";
   context.font = "20px Quicksand";
   context.fillText("Great Landing! You Win.", this.canvas.width / 2, 200);
+  context.font = "15px Quicksand";
+  context.fillText("Click to Play Again", this.canvas.width / 2, 230);
   context.closePath();
 
   document.getElementById('game').removeEventListener("click", this.startPlaying.bind(this));

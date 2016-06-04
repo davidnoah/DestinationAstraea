@@ -161,6 +161,8 @@
 	  context.textAlign = "center";
 	  context.font = "20px Quicksand";
 	  context.fillText("Game Over! You Lose", this.canvas.width / 2, 200);
+	  context.font = "15px Quicksand";
+	  context.fillText("Click to Play Again", this.canvas.width / 2, 230);
 	  context.closePath();
 	
 	  document.getElementById('game').removeEventListener("click", this.startPlaying.bind(this));
@@ -175,6 +177,8 @@
 	  context.textAlign = "center";
 	  context.font = "20px Quicksand";
 	  context.fillText("Great Landing! You Win.", this.canvas.width / 2, 200);
+	  context.font = "15px Quicksand";
+	  context.fillText("Click to Play Again", this.canvas.width / 2, 230);
 	  context.closePath();
 	
 	  document.getElementById('game').removeEventListener("click", this.startPlaying.bind(this));
@@ -237,6 +241,7 @@
 	    rotatingRight: false,
 	    gameOver: false,
 	    won: false,
+	    exploding: false,
 	    fuel: 800
 	  };
 	};
@@ -245,22 +250,27 @@
 	    var spaceship = this.spaceship;
 	    var context = this.context;
 	    var color = getCanvasPixelColor(context, spaceship.position.x, spaceship.position.y);
-	    if (spaceship.fuel <= 0) {
+	    if (spaceship.exploding) {
 	      explosion.updateExplosion(10, context);
 	      this.explode();
-	    } else if (color.rgb === "rgb(255,255,255)") {
-	      explosion.updateExplosion(10, context);
-	      this.explode();
-	    } else if (color.rgb === "rgb(254,254,254)") {
-	      if (this.checkSpeed()) {
-	        this.land();
-	      } else {
+	    } else {
+	      if (spaceship.fuel <= 0) {
 	        explosion.updateExplosion(10, context);
 	        this.explode();
+	      } else if (color.rgb === "rgb(255,255,255)") {
+	        explosion.updateExplosion(10, context);
+	        this.explode();
+	      } else if (color.rgb === "rgb(254,254,254)") {
+	        if (this.checkSpeed()) {
+	          this.land();
+	        } else {
+	          explosion.updateExplosion(10, context);
+	          this.explode();
+	        }
+	      } else {
+	        context.save();
+	        this.buildRect();
 	      }
-	    } else {
-	      context.save();
-	      this.buildRect();
 	    }
 	
 	    if(spaceship.engineOn) {
@@ -282,6 +292,7 @@
 	Spaceship.prototype.explode = function() {
 	  var spaceship = this.spaceship;
 	  spaceship.gameOver = true;
+	  spaceship.exploding = true;
 	  spaceship.velocity.x = 0;
 	  spaceship.velocity.y = 0;
 	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
@@ -306,6 +317,7 @@
 	  spaceship.velocity.y = 0;
 	  spaceship.angle = 2 * Math.PI;
 	  spaceship.gameOver = true;
+	  spaceship.won = true;
 	  this.buildRect();
 	};
 	
