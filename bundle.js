@@ -137,6 +137,7 @@
 	  context.beginPath();
 	  context.fillStyle = "rgb(224,224,224)";
 	  context.font = "10px Quicksand";
+	  context.textAlign = 'left';
 	  context.fillText("Fuel: " + spaceship.spaceship.fuel, 5, 10);
 	  context.closePath();
 	};
@@ -223,17 +224,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Explosion = __webpack_require__(3);
-	var explosion = new Explosion();
 	var getCanvasPixelColor = __webpack_require__(5);
 	
 	var Spaceship = function(context, moon) {
 	  this.context = context;
 	  this.moon = moon;
+	  this.explosion = new Explosion();
 	  this.spaceship = {
 	    color: "white",
 	    width: 4,
 	    height: 11,
-	    position: {x: 20, y: 20},
+	    position: {x: 100, y: 20},
 	    velocity: {x: -1.2, y: 0},
 	    angle: Math.PI / 2,
 	    engineOn: false,
@@ -251,20 +252,20 @@
 	    var context = this.context;
 	    var color = getCanvasPixelColor(context, spaceship.position.x, spaceship.position.y);
 	    if (spaceship.exploding) {
-	      explosion.updateExplosion(10, context);
+	      this.explosion.updateExplosion(10, context);
 	      this.explode();
 	    } else {
 	      if (spaceship.fuel <= 0) {
-	        explosion.updateExplosion(10, context);
+	        this.explosion.updateExplosion(10, context);
 	        this.explode();
 	      } else if (color.rgb === "rgb(255,255,255)") {
-	        explosion.updateExplosion(10, context);
+	        this.explosion.updateExplosion(10, context);
 	        this.explode();
 	      } else if (color.rgb === "rgb(254,254,254)") {
 	        if (this.checkSpeed()) {
 	          this.land();
 	        } else {
-	          explosion.updateExplosion(10, context);
+	          this.explosion.updateExplosion(10, context);
 	          this.explode();
 	        }
 	      } else {
@@ -295,8 +296,8 @@
 	  spaceship.exploding = true;
 	  spaceship.velocity.x = 0;
 	  spaceship.velocity.y = 0;
-	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
-	  explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
+	  this.explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
+	  this.explosion.createExplosion(spaceship.position.x, spaceship.position.y, spaceship.color);
 	};
 	
 	Spaceship.prototype.buildRect = function() {

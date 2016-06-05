@@ -73,6 +73,7 @@ Game.prototype.drawFuel = function() {
   context.beginPath();
   context.fillStyle = "rgb(224,224,224)";
   context.font = "10px Quicksand";
+  context.textAlign = 'left';
   context.fillText("Fuel: " + spaceship.spaceship.fuel, 5, 10);
   context.closePath();
 };
