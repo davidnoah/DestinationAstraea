@@ -18,7 +18,7 @@ var Spaceship = function(context, moon) {
     gameOver: false,
     won: false,
     exploding: false,
-    fuel: 800
+    fuel: 700
   };
 };
 

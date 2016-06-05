@@ -243,7 +243,7 @@
 	    gameOver: false,
 	    won: false,
 	    exploding: false,
-	    fuel: 800
+	    fuel: 700
 	  };
 	};
 	
@@ -515,31 +515,31 @@
 	    landingPads: [],
 	    moonStart: {x: 0, y: 400},
 	    coords: [
-	      [50, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [50, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [150, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
-	      [180, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
-	      [225, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [150, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
+	      [180, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
+	      [225, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [260, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
-	      [275, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [260, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
+	      [275, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [410, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [410, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [460, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [460, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [580, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [580, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [640, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [640, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [730, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [730, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [770, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
-	      [840, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [770, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
+	      [840, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [920, Math.floor(Math.random() * (600 - 300 + 1)) + 300],
+	      [920, Math.floor(Math.random() * (500 - 275 + 1)) + 275],
 	      "landing",
-	      [950, Math.floor(Math.random() * (600 - 300 + 1)) + 300]
+	      [950, Math.floor(Math.random() * (500 - 275 + 1)) + 275]
 	    ],
 	    moonEnd: {x: 1000, y: 400},
 	    moonDrawn: false
