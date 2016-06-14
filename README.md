@@ -1,6 +1,6 @@
 # Destination Astraea
 
-Live Link: [Destination Astraea](davidnoah.github.io/DestinationAstraea)
+Live Link: [Destination Astraea](http://davidnoah.github.io/DestinationAstraea/)
 
 ### Description
 
