@@ -85,8 +85,8 @@ Game.prototype.drawVelocity = function() {
   context.fillStyle = "rgb(224,224,224)";
   context.font = "10px Quicksand";
   context.textAlign = "left";
-  context.fillText("Velocity Y: " + Math.round(spaceship.spaceship.velocity.y * 100) , 5, 25);
-  context.fillText("Velocity X: " + Math.round(spaceship.spaceship.velocity.x * 100), 5, 40);
+  context.fillText("Velocity Y: " + Math.abs(Math.round(spaceship.spaceship.velocity.y * 100)) , 5, 25);
+  context.fillText("Velocity X: " + Math.abs(Math.round(spaceship.spaceship.velocity.x * 100)), 5, 40);
   context.closePath();
 };
 
