@@ -57,6 +57,7 @@ Spaceship.prototype.drawSpaceship = function() {
 
 Spaceship.prototype.checkSpeed = function() {
   var spaceship = this.spaceship;
+  debugger;
   if (Math.round(spaceship.velocity.y * 100) <= 20 && Math.round(spaceship.velocity.x * 100) <= 20 &&
       Math.round(spaceship.velocity.y >= -20) && Math.round(spaceship.velocity.x * 100) >= -20) {
     return true;
